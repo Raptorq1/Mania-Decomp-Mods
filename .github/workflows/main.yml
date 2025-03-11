@@ -10,7 +10,64 @@ on:
 
 jobs:
   build:
+    runs-on: name: Build Sonic Mania Plus with Mods
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to the main branch
+
+jobs:
+  build:
     runs-on: ubuntu-latest  # Use Ubuntu for the build process
+
+    steps:
+    # Step 1: Checkout the RSDKv5-Decompilation repository
+    - name: Checkout RSDKv5-Decompilation Repository
+      uses: actions/checkout@v4
+      with:
+        repository: RSDKModding/RSDKv5-Decompilation  # Correct Sonic Mania Plus Decomp repository
+
+    # Step 2: Checkout the Sonic-2-Mania-Development repository with mods
+    - name: Checkout Sonic-2-Mania-Development Repository
+      uses: actions/checkout@v4
+      with:
+        repository: AChickMcNuggie/Sonic-2-Mania-Development  # Repository with the mods
+        path: mods
+
+    # Step 3: Set up dependencies for building
+    - name: Set up Dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential python3 python3-pip cmake clang  # Install necessary build tools
+        python3 -m pip install --upgrade pip  # Update pip
+
+    # Step 4: Set up submodules and build the project
+    - name: Setup and Build the Project
+      run: |
+        cd RSDKv5-Decompilation  # Go to the RSDKv5-Decompilation repository
+
+        # Step 4.1: Initialize submodules (if they are part of the decomp repository)
+        git submodule update --init --recursive
+
+        # Step 4.2: Apply the mods from the Sonic-2-Mania-Development repository
+        cp -r ../mods/* .  # Copy the mods into the decomp repository
+
+        # Step 4.3: Create the build directory and run cmake
+        mkdir build
+        cd build
+        cmake ..  # Set up the build system with cmake
+        make  # Compile the project using make
+
+    # Step 5: Upload Build Artifacts (optional)
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sonic-mania-plus-build
+        path: ./build  # Adjust to the actual build output pathubuntu-latest  # Use Ubuntu for the build process
 
     steps:
     # Step 1: Checkout the Sonic Mania Plus Decomp repository
@@ -30,26 +87,5 @@ jobs:
     - name: Set up Dependencies
       run: |
         sudo apt update
-        sudo apt install -y build-essential python3 python3-pip cmake clang  # Install necessary build tools
-        python3 -m pip install --upgrade pip  # Update pip
-
-    # Step 4: Build the project
-    - name: Build Sonic Mania Plus with Mods
-      run: |
-        cd Sonic-Mania-Plus-Decomp  # Go to the Sonic Mania Decompilation directory
-        git submodule update --init --recursive  # Initialize submodules if required
-        git checkout main  # Ensure we're on the main branch of the decomp repository
-        
-        # Building the project according to the BUILDING.md file
-        # First, build the dependencies using CMake
-        mkdir build
-        cd build
-        cmake ..
-        make  # Run make to compile the project
-
-    # Step 5: Upload Build Artifacts (optional)
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: sonic-mania-plus-build
-        path: ./build  # Path to the build output, adjust as necessary
+        sudo apt install -y build-essential python3 python3-pip cmake clang  # Install necessary main  # Ensure we're on the main branch of the decomp repository
+        # Building projt according to the BUILDING.md file to coload Build Artifacts (opBuild Ao the build output, adj
