@@ -10,18 +10,6 @@ on:
 
 jobs:
   build:
-    runs-on: name: Build Sonic Mania Plus with Mods
-
-on:
-  push:
-    branches:
-      - main  # Trigger on pushes to the main branch
-  pull_request:
-    branches:
-      - main  # Trigger on pull requests to the main branch
-
-jobs:
-  build:
     runs-on: ubuntu-latest  # Use Ubuntu for the build process
 
     steps:
