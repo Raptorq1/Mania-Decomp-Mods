@@ -15,13 +15,13 @@ jobs:
     steps:
     # Step 1: Checkout the RSDKv5-Decompilation repository
     - name: Checkout RSDKv5-Decompilation Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4  # Correct checkout version v4
       with:
         repository: RSDKModding/RSDKv5-Decompilation  # Correct Sonic Mania Plus Decomp repository
 
     # Step 2: Checkout the Sonic-2-Mania-Development repository with mods
     - name: Checkout Sonic-2-Mania-Development Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4  # Correct checkout version v4
       with:
         repository: AChickMcNuggie/Sonic-2-Mania-Development  # Repository with the mods
         path: mods
@@ -35,17 +35,16 @@ jobs:
         python3 -m pip install --upgrade pip  # Update pip
         echo "Dependencies installed."
 
-    # Step 4: Set up submodules and build the project
-    - name: Setup and Build the Project
+    # Step 4: Apply mods and configure the build
+    - name: Apply Mods and Configure Build
       run: |
-        cd RSDKv5-Decompilation  # Go to the RSDKv5-Decompilation repository
         echo "Initializing git submodules..."
         git submodule update --init --recursive  # Initialize any submodules
         echo "Submodules initialized."
 
         # Step 4.1: Apply the mods from the Sonic-2-Mania-Development repository
         echo "Copying mods from Sonic-2-Mania-Development repository..."
-        cp -r ../mods/* .  # Copy the mods into the decomp repository
+        cp -r mods/* .  # Copy the mods into the decomp repository
         echo "Mods copied."
 
         # Step 4.2: Create the build directory and configure the build using CMake
@@ -61,9 +60,9 @@ jobs:
         make  # Run make to build the project
         echo "Build completed."
 
-    # Step 5: Upload Build Artifacts (optional)
+    # Step 5: Upload Build Artifacts (with version v4)
     - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4  # Correct upload-artifact version v4
       with:
         name: sonic-mania-plus-build
-        path: ./build  # Adjust to the actual build output paths
+        path: ./build  # Adjust to the actual build output path
