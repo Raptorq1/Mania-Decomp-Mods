@@ -55,25 +55,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: sonic-mania-plus-build
-        path: ./build  # Adjust to the actual build output pathubuntu-latest  # Use Ubuntu for the build process
-
-    steps:
-    # Step 1: Checkout the Sonic Mania Plus Decomp repository
-    - name: Checkout Sonic Mania Plus Decomp Repository
-      uses: actions/checkout@v4
-      with:
-        repository: RSDKModding/RRSDKv5-Decompilation # Replace with your Sonic Mania Plus Decomp repo
-
-    # Step 2: Checkout the Mania-Decomp-Mods repository with mods
-    - name: Checkout Mania-Decomp-Mods Repository
-      uses: actions/checkout@v4
-      with:
-        repository: AChickMcNuggie/Sonic-2-Mania-Development  # Repository with the mods
-        path: mods
-
-    # Step 3: Set up dependencies and tools for building
-    - name: Set up Dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y build-essential python3 python3-pip cmake clang  # Install necessary main  # Ensure we're on the main branch of the decomp repository
-        # Building projt according to the BUILDING.md file to coload Build Artifacts (opBuild Ao the build output, adj
+        path: ./build  # Adjust to the actual build output path
