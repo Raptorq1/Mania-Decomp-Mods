@@ -29,30 +29,41 @@ jobs:
     # Step 3: Set up dependencies for building
     - name: Set up Dependencies
       run: |
+        echo "Updating and installing necessary packages..."
         sudo apt update
-        sudo apt install -y build-essential python3 python3-pip cmake clang  # Install necessary build tools
+        sudo apt install -y build-essential python3 python3-pip cmake clang git libx11-dev libxxf86vm-dev libxext-dev  # Install necessary build tools
         python3 -m pip install --upgrade pip  # Update pip
+        echo "Dependencies installed."
 
     # Step 4: Set up submodules and build the project
     - name: Setup and Build the Project
       run: |
         cd RSDKv5-Decompilation  # Go to the RSDKv5-Decompilation repository
+        echo "Initializing git submodules..."
+        git submodule update --init --recursive  # Initialize any submodules
+        echo "Submodules initialized."
 
-        # Step 4.1: Initialize submodules (if they are part of the decomp repository)
-        git submodule update --init --recursive
-
-        # Step 4.2: Apply the mods from the Sonic-2-Mania-Development repository
+        # Step 4.1: Apply the mods from the Sonic-2-Mania-Development repository
+        echo "Copying mods from Sonic-2-Mania-Development repository..."
         cp -r ../mods/* .  # Copy the mods into the decomp repository
+        echo "Mods copied."
 
-        # Step 4.3: Create the build directory and run cmake
-        mkdir build
-        cd build
-        cmake ..  # Set up the build system with cmake
-        make  # Compile the project using make
+        # Step 4.2: Create the build directory and configure the build using CMake
+        echo "Creating build directory..."
+        mkdir -p build  # Create the build directory
+        cd build  # Enter the build directory
+        echo "Running CMake configuration..."
+        cmake ..  # Run CMake to configure the project
+        echo "CMake configuration completed."
+
+        # Step 4.3: Compile the project using make
+        echo "Starting make to compile the project..."
+        make  # Run make to build the project
+        echo "Build completed."
 
     # Step 5: Upload Build Artifacts (optional)
     - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v2
       with:
         name: sonic-mania-plus-build
-        path: ./build  # Adjust to the actual build output path
+        path: ./build  # Adjust to the actual build output paths
