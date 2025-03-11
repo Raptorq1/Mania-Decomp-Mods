@@ -15,15 +15,15 @@ jobs:
     steps:
     # Step 1: Checkout the Sonic Mania Plus Decomp repository
     - name: Checkout Sonic Mania Plus Decomp Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
-        repository: your-username/Sonic-Mania-Plus-Decomp  # Replace with your Sonic Mania Plus Decomp repo
+        repository: RSDKModding/RRSDKv5-Decompilation # Replace with your Sonic Mania Plus Decomp repo
 
     # Step 2: Checkout the Mania-Decomp-Mods repository with mods
     - name: Checkout Mania-Decomp-Mods Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
-        repository: MegAmi24/Mania-Decomp-Mods  # Repository with the mods
+        repository: AChickMcNuggie/Sonic-2-Mania-Development  # Repository with the mods
         path: mods
 
     # Step 3: Set up dependencies and tools for building
